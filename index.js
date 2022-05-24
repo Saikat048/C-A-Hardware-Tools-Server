@@ -44,6 +44,14 @@ async function run() {
         res.send(result)
       }) 
 
+
+      app.get('/order', async(req,res) => {
+        const query = {};
+        const cursor = orderCollection.find(query);
+        const order = await cursor.toArray();
+        res.send(order) 
+      });
+
   
     } finally { 
     //   await client.close(); 
