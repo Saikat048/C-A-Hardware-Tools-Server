@@ -20,6 +20,7 @@ async function run() {
   
       await client.connect(); 
       const toolsCollection = client.db("assignment-tools").collection("tools");
+      const orderCollection = client.db("assignment-tools").collection("order");
 
       app.get('/tools', async(req,res) => {
         const query = {};
@@ -35,6 +36,13 @@ async function run() {
         const tools = await toolsCollection.findOne(query);
         res.send(tools) 
       })
+
+
+      app.post('/order', async(req, res) => {  
+        const order = req.body;  
+        const result = await orderCollection.insertOne(order);
+        res.send(result)
+      }) 
 
   
     } finally { 
