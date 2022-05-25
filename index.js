@@ -21,6 +21,7 @@ async function run() {
       await client.connect(); 
       const toolsCollection = client.db("assignment-tools").collection("tools");
       const orderCollection = client.db("assignment-tools").collection("order");
+      const infoCollection = client.db("assignment-tools").collection("info");
 
       app.get('/tools', async(req,res) => {
         const query = {};
@@ -63,6 +64,14 @@ async function run() {
         res.send(result)
       })
 
+
+
+      
+      app.post('/info', async(req, res) => {  
+        const info = req.body;  
+        const result = await infoCollection.insertOne(info);
+        res.send(result)
+      }) 
 
 
   
