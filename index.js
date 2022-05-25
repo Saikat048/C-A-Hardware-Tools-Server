@@ -74,6 +74,13 @@ async function run() {
       }) 
 
 
+      app.get('/info', async(req,res) => {
+        const query = {};
+        const cursor = infoCollection.find(query);
+        const info = await cursor.toArray();
+        res.send(info) 
+      });
+
   
     } finally { 
     //   await client.close(); 
