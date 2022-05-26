@@ -22,6 +22,7 @@ async function run() {
       const toolsCollection = client.db("assignment-tools").collection("tools");
       const orderCollection = client.db("assignment-tools").collection("order");
       const infoCollection = client.db("assignment-tools").collection("info");
+      const reviewCollection = client.db("assignment-product").collection("review");
 
       app.get('/tools', async(req,res) => {
         const query = {};
@@ -39,8 +40,18 @@ async function run() {
       })
 
 
+
+      app.post('/review', async(req, res) => {  
+        const order = req.body;  
+        console.log(order)
+        const result = await reviewCollection.insertOne(order);
+        res.send(result)
+      }) 
+
+
       app.post('/order', async(req, res) => {  
         const order = req.body;  
+        console.log(order)
         const result = await orderCollection.insertOne(order);
         res.send(result)
       }) 
@@ -58,8 +69,7 @@ async function run() {
       
       app.delete('/order/:id', async(req, res) => {
         const id = req.params.id;
-        const query = {_id: ObjectId(id)};
-        console.log(query)
+        const query = {_id: ObjectId(id)}; 
         const result = await orderCollection.deleteOne(query);
         res.send(result)
       })
@@ -94,6 +104,7 @@ async function run() {
           const result = await infoCollection.updateOne(filter, updateDoc, options);
           res.send(result)
       })
+
 
   
     } finally { 
