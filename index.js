@@ -24,6 +24,7 @@ async function run() {
       const infoCollection = client.db("assignment-tools").collection("info");
       const reviewCollection = client.db("assignment-product").collection("review");
 
+      // get tools
       app.get('/tools', async(req,res) => {
         const query = {};
         const cursor = toolsCollection.find(query);
@@ -31,7 +32,7 @@ async function run() {
         res.send(tools) 
       });
 
-
+      // get tools one
       app.get('/tools/:id', async(req, res) => {
         const id = req.params.id; 
         const query = {_id: ObjectId(id)};
@@ -39,14 +40,16 @@ async function run() {
         res.send(tools) 
       })
 
+      // get review
       app.get('/review', async(req,res) => {
         const query = {};
-        const cursor = reviewCollection.find(query);
+        const cursor = reviewCollection.find(query).sort({$natural: -1}).limit(3);
         const review = await cursor.toArray();
         res.send(review) 
       });
 
 
+      // post review
       app.post('/review', async(req, res) => {  
         const order = req.body;  
         console.log(order)
@@ -55,6 +58,7 @@ async function run() {
       }) 
 
 
+      // post order 
       app.post('/order', async(req, res) => {  
         const order = req.body;  
         // console.log(order)
@@ -63,16 +67,17 @@ async function run() {
       }) 
 
 
+      // get order 
       app.get('/order', async(req,res) => {
         const query = {};
         const cursor = orderCollection.find(query);
         const order = await cursor.toArray();
         res.send(order) 
       });
-
-
-
+ 
       
+
+      // order delete 
       app.delete('/order/:id', async(req, res) => {
         const id = req.params.id;
         const query = {_id: ObjectId(id)}; 
@@ -83,6 +88,7 @@ async function run() {
 
 
       
+      // post info 
       app.post('/info', async(req, res) => {  
         const info = req.body;  
         const result = await infoCollection.insertOne(info);
@@ -90,6 +96,7 @@ async function run() {
       }) 
 
 
+      // get info ?
       app.get('/info', async(req,res) => {
         const query = {};
         const cursor = infoCollection.find(query);
@@ -98,6 +105,8 @@ async function run() {
       });
 
 
+
+      // put info email 
       app.put('/info/:email', async(req, res) => {
           const email = req.params.email;
           const update = req.body;
