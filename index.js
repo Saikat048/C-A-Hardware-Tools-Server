@@ -39,6 +39,12 @@ async function run() {
         res.send(tools) 
       })
 
+      app.get('/review', async(req,res) => {
+        const query = {};
+        const cursor = reviewCollection.find(query);
+        const review = await cursor.toArray();
+        res.send(review) 
+      });
 
 
       app.post('/review', async(req, res) => {  
@@ -51,7 +57,7 @@ async function run() {
 
       app.post('/order', async(req, res) => {  
         const order = req.body;  
-        console.log(order)
+        // console.log(order)
         const result = await orderCollection.insertOne(order);
         res.send(result)
       }) 
