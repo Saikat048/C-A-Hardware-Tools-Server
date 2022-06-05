@@ -2,8 +2,8 @@ const express = require('express');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express();
 require('dotenv').config();
-const cors = require('cors');
-const port = process.env.PORT || 5000
+const cors = require('cors'); 
+const port = process.env.PORT || 5000;
 
 const uri = `mongodb+srv://${process.env.DB_ASSIGNMENT}:${process.env.DB_PASSWORD}@cluster0.a6obg.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
@@ -74,9 +74,16 @@ async function run() {
         const order = await cursor.toArray();
         res.send(order) 
       });
- 
-      
 
+
+      // get single order
+      app.get('/order/:id', async(req, res) => {
+        const id = req.params.id;
+        const query = {_id: ObjectId(id)};
+        const order = await orderCollection.findOne(query);
+        res.send(order);
+      })
+   
       // order delete 
       app.delete('/order/:id', async(req, res) => {
         const id = req.params.id;
